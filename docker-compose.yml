@@ -1,0 +1,80 @@
+services:
+  backend_php:
+    container_name: "${PREFIX}_php"
+    hostname: "${HOST_NAME}"
+    domainname: "${DOMAIN_NAME}"
+    image: "${PREFIX}/backend_php:laravel.v11"
+    platform: linux/amd64
+    ports:
+      - "${BACKEND_PHP_PORT:-80}:80"
+    user: root
+    build:
+      context: ./.docker/init/backend_php
+      dockerfile: Dockerfile
+      target: backend_php
+      args:
+        BACKEND_PHP_IP: "${BACKEND_PHP_IP}"
+        NODE_VERSION: "${NODE_VERSION}"
+    depends_on:
+      - sqliteadmin
+    environment:
+      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+      XDEBUG_CONFIG: "${XDEBUG_CONFIG:-client_host=${HOST_NAME}}"
+      PHP_IDE_CONFIG: "serverName=${HOST_NAME}"
+    volumes:
+      - ./src:/var/www/html
+      - ./.docker/logs/backend_php:/var/log/php
+      - ./.docker/init/backend_php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      dev-docker:
+        aliases: 
+          - backend_php
+        ipv4_address: "${BACKEND_PHP_IP}"
+  sqliteadmin:
+    container_name: "${PREFIX}_sqliteadmin"
+    hostname: "${HOST_NAME}_sqliteadmin"
+    image: "${PREFIX}/sqliteadmin:phpliteadmin.v1.9.9-dev"
+    platform: linux/amd64
+    volumes:
+      - sqlite_data:/db
+      - phpliteadmin:/var/www/html
+    ports:
+      - "${SQLITEADMIN_PORT:-81}:80"
+    user: root
+    build:
+      context: ./.docker/init/sqliteadmin
+      dockerfile: Dockerfile
+      target: sqliteadmin
+    environment:
+      - PHPLITEADMIN_PASSWORD=${SQLITEADMIN_PASSWORD:-password}
+      - PHPLITEADMIN_ROWSNUM='50'
+      - PHPLITEADMIN_CHARSNUM='500'
+      - PHPLITEADMIN_MAXSAVEDQUERIES='20'
+      - PHPLITEADMIN_COOKIE_NAME='glvpla'
+    restart: "always"
+    networks:
+      dev-docker:
+        aliases: 
+          - phpliteadmin
+        ipv4_address: "${SQLITEADMIN_IP}"
+networks:
+  dev-docker:
+    name: "${PREFIX}_network"
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "${SUBNET_MASK}"
+          gateway: "${GATEWAY_IP}"
+volumes:
+  sqlite_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: "${SQLITE_DIR:-./database}"
+      o: bind
+  phpliteadmin:
+    driver: local
+    driver_opts:
+      type: none
+      device: "${PHPLITEADMIN_DIR:-./database}"
+      o: bind
