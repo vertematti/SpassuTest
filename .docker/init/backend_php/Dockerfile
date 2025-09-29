@@ -68,7 +68,6 @@ ENV NVM_DIR=/home/appuser/.nvm
 RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
 RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
 RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm install-latest-npm
 ENV PATH="/home/appuser/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 RUN npm install -g npm@latest
