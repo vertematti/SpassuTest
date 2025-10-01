@@ -62,7 +62,7 @@ Create a base layout file (e.g., resources/views/layouts/app.blade.php) and incl
         </div>
     @endsection
     
-    
+Ajustar o vite.config.js
     npm run build
     
     
