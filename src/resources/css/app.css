@@ -1,3 +1,10 @@
+/* Import de Styles do Start Bootstrap Admin */
+@import './styles_sba.css';
+
+/* Import de todos os ícones da Font Awesome Free */
+@import '@fortawesome/fontawesome-free/css/all.css';
+
+/* Import do legado Tailwind do Laravel */ 
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

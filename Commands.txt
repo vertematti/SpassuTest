@@ -6,8 +6,8 @@ rm -rf sistema
 Editar .env para apontar database sqlite para sqlite/database.db
 php artisan migrate
 npm install
-npm install bootstrap @popperjs/core
-npm install @popperjs/core --save
+npm i --save bootstrap @popperjs/core
+npm i --save @fortawesome/fontawesome-free
 npm install --save-dev sass
 npm cache clean --force
 Create a sass folder inside resources and an app.scss file within it:
@@ -63,6 +63,8 @@ Create a base layout file (e.g., resources/views/layouts/app.blade.php) and incl
     @endsection
     
 Ajustar o vite.config.js
-    npm run build
+npm run build
     
-    
+composer require laravel/ui
+php artisan ui bootstrap --auth
+npm run build

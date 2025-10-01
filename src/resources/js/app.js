@@ -1,2 +1,5 @@
-//import './bootstrap';
-import * as bootstrap from 'bootstrap';
+/* Import do Bootstrap 5' */
+import './bootstrap';
+
+/* Import do Start Bootstrap Admin */
+import './scripts_sba';
